@@ -10,11 +10,9 @@ def read_file(path: str, year: int):
         for line in file:
             try:
                 line = line.decode().strip()
-                if line.startswith('"'):
-                    if counter < 10:
-                        if year in line:
-                            res.append(line)
-                            counter += 1
+                if line.startswith('"') and counter < 10 and year in line:
+                    res.append(line)
+                    counter += 1
             except UnicodeDecodeError:
                 continue
         
