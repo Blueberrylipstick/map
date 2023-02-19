@@ -6,13 +6,15 @@ from folium import plugins
 from geopy.geocoders import Nominatim
 
 def read_file(way: str, date: int):
-    '''
-    Function to read file
-    :param str way: path to the file to read
-    :param int date: year of film to look for
-    :returns: list of adresses
-    :rtype: list
-    '''
+    """Function to read locations of mivies of certain year
+
+    Args:
+        way (str): pth to file
+        date (int): year of films to look for
+
+    Returns:
+        list: list of locations
+    """
     with open(way, 'rb') as file:
         date = f'({date})'
         res = []
@@ -43,13 +45,13 @@ def find_coords(points: str) -> list:
     geolocator = Nominatim(user_agent="http")
     places = []
 
-    print(points)
     for point in points:
         try:
             location = geolocator.geocode(point)
             if location:
                 places.append((location.latitude, location.longitude))
         except:
+            print('error')
             continue
     return places
 
@@ -85,10 +87,10 @@ def build_map(my_loc: tuple, addresses: list):
     Args:
         my_loc (tuple): _description_
         addresses (list): _description_
-    """       
+    """  
     lat = [address[0][0] for address in addresses]
     lon = [address[0][1] for address in addresses]
-    names = [address[1] for address in addresses]
+    dists = [address[1] for address in addresses]
     maps = folium.Map(location=my_loc, zoom_start=10)
     html = """<h4>Info:</h4>
         Distance to me: {}
@@ -99,8 +101,8 @@ def build_map(my_loc: tuple, addresses: list):
 
     fg = folium.FeatureGroup(name='Popups')
 
-    for lt, ln, name in zip(lat, lon, names):
-        iframe = folium.IFrame(html=html.format(name),
+    for lt, ln, dist in zip(lat, lon, dists):
+        iframe = folium.IFrame(html=html.format(f'{round(dist, 1)} km'),
                           width=300,
                           height=100)
 
@@ -110,7 +112,7 @@ def build_map(my_loc: tuple, addresses: list):
 
     fg2 = folium.FeatureGroup(name='Circles')
 
-    for lt, ln, _ in zip(lat, lon, names):
+    for lt, ln, _ in zip(lat, lon, dists):
         fg2.add_child(folium.CircleMarker(location=[lt, ln],radius=20, fill_color='blue'))
 
     maps.add_child(fg)
@@ -140,6 +142,5 @@ if __name__ == '__main__':
     locations = find_coords(read_file(path, year))
     points = [[elem, calc_distance(lat, lon, elem[0], elem[1])] for elem in locations]
     points.sort(key = lambda x: x[1])
-    print(points)
-    points = points[:5]
+    points = points[:10]
     build_map(my_loc, points)
