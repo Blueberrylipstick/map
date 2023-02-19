@@ -10,6 +10,10 @@ Enter required arguments into the comand line
 python3 /Users/julia/Desktop/OP/week_1/map/lab1_2.py 2014 49.83826 24.02324 'path to file with films'
 ```
 
+## Fuctional
+
+![My Image](/Users/julia/Desktop/OP/week_1/carbon.png)
+
 ## Contributing
 
 Any improvements are very welcomed!
