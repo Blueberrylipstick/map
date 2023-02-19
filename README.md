@@ -16,9 +16,14 @@ python3 /Users/julia/Desktop/OP/week_1/map/lab1_2.py 2014 49.83826 24.02324 'pat
 
 ## Fuctional
 
+In the module functions are called through argparse, using comandline.
+
 ![My Image](images/carbon.png)
+
 ![My Image](images/carbon1.png)
+
 ![My Image](images/carbon2.png)
+
 ![My Image](images/carbon3.png)
 
 ## Contributing
