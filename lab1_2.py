@@ -1,37 +1,50 @@
+'''Module to create a map'''
 import argparse
 from math import radians, sin, cos, sqrt, asin
 import folium
 from folium import plugins
 from geopy.geocoders import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
 
-def read_file(path: str, year: int):
-    with open(path, 'rb') as file:
-        year = f'({year})'
+def read_file(way: str, date: int):
+    '''
+    Function to read file
+    :param str way: path to the file to read
+    :param int date: year of film to look for
+    :returns: list of adresses
+    :rtype: list
+    '''
+    with open(way, 'rb') as file:
+        date = f'({date})'
         res = []
         for line in file:
             try:
                 line = line.decode().strip()
-                if year in line:
+                if date in line:
                     res.append(line)
             except UnicodeDecodeError:
                 continue
-        
+
         res = [elem.split('\t') for elem in res[14:-2]]
         res = {line[-2] if '(' in line[-1] else line[-1] for line in res}
 
         return res
-# print(read_file('/Users/julia/Desktop/OP/week_1/locations.list', 2015))
-def find_coords(points):
+
+
+def find_coords(points: str) -> list:
+    """
+    Function to find coordinates based on addresses
+
+    Args:
+        points (str): list of addresses
+
+    Returns:
+        list(tuple): list of coordinates
+    """
     geolocator = Nominatim(user_agent="http")
     places = []
-    
-    j = 0
+
     print(points)
     for point in points:
-        print(j)
-        j+=1
-
         try:
             location = geolocator.geocode(point)
             if location:
@@ -41,7 +54,18 @@ def find_coords(points):
     return places
 
 
-def calc_distance(lat1, lon1, lat2, lon2) -> list:
+def calc_distance(lat1: int, lon1: int, lat2: int, lon2: int) -> list:
+    """Function to calculate distance from our location to location of movie
+
+    Args:
+        lat1 (int): our latitude
+        lon1 (int): our longtitude
+        lat2 (int): movie's latitude
+        lon2 (int): movie's longtitude
+
+    Returns:
+        list: list of distances
+    """
     radius = 6372.8
 
     dlat = radians(lat2 - lat1)
@@ -55,7 +79,13 @@ def calc_distance(lat1, lon1, lat2, lon2) -> list:
     return radius * res
 
 
-def build_map(my_loc, addresses):
+def build_map(my_loc: tuple, addresses: list):
+    """_summary_
+
+    Args:
+        my_loc (tuple): _description_
+        addresses (list): _description_
+    """       
     lat = [address[0][0] for address in addresses]
     lon = [address[0][1] for address in addresses]
     names = [address[1] for address in addresses]
@@ -68,30 +98,29 @@ def build_map(my_loc, addresses):
                    icon=folium.Icon(color="blue")))
 
     fg = folium.FeatureGroup(name='Popups')
-    
+
     for lt, ln, name in zip(lat, lon, names):
         iframe = folium.IFrame(html=html.format(name),
                           width=300,
                           height=100)
-        
+
         fg.add_child(folium.Marker(location=[lt, ln],
                     popup=folium.Popup(iframe),
                     icon=folium.Icon(color = "red")))
-    
+
     fg2 = folium.FeatureGroup(name='Circles')
-    
+
     for lt, ln, _ in zip(lat, lon, names):
         fg2.add_child(folium.CircleMarker(location=[lt, ln],radius=20, fill_color='blue'))
 
     maps.add_child(fg)
     maps.add_child(fg2)
-   
+
     minimap = plugins.MiniMap(toggle_display=True)
     maps.add_child(minimap)
     maps.add_child(folium.LayerControl())
     maps.save('Map_New.html')
 
-# print(build_map([49.83826, 24.02324], [(49.841952, 24.0315921, "Львів"), (48.287312, 25.1738, "Старі Кути"), (49.993694, 24.898352, "Кути"), (48.296581, 24.87579, "Брустурів")]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -107,11 +136,10 @@ if __name__ == '__main__':
     lon = args.lon
     path = args.path
     my_loc = [lat, lon]
-    
+
     locations = find_coords(read_file(path, year))
     points = [[elem, calc_distance(lat, lon, elem[0], elem[1])] for elem in locations]
     points.sort(key = lambda x: x[1])
     print(points)
     points = points[:5]
     build_map(my_loc, points)
-
