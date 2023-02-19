@@ -18,13 +18,25 @@ python3 /Users/julia/Desktop/OP/week_1/map/lab1_2.py 2014 49.83826 24.02324 'pat
 
 In the module functions are called through argparse, using comandline.
 
-![My Image](images/carbon.png)
+![func read file](images/carbon.png)
 
-![My Image](images/carbon1.png)
+Function to read data from file
 
-![My Image](images/carbon2.png)
+![func find coords](images/carbon1.png)
+
+Function gets list of locations and returns their coordinates
+
+![func calc distance](images/carbon2.png)
+
+Function to calculate distance from your location to place, where movie was filmed
 
 ![My Image](images/carbon3.png)
+
+
+
+![function main](images/carbon%20(1).png)
+
+The main body of module with argument parser
 
 ## Contributing
 

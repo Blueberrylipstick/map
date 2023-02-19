@@ -123,8 +123,10 @@ def build_map(my_loc: tuple, addresses: list):
     maps.add_child(folium.LayerControl())
     maps.save('Map_New.html')
 
-
-if __name__ == '__main__':
+def main():
+    """
+    The main budy of function
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('year', type=int, help='enter year of movie')
     parser.add_argument('lat', type=float, help='enter latitude')
@@ -144,3 +146,6 @@ if __name__ == '__main__':
     points.sort(key = lambda x: x[1])
     points = points[:10]
     build_map(my_loc, points)
+
+if __name__ == '__main__':
+    main()
