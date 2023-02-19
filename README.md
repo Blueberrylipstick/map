@@ -30,9 +30,12 @@ Function gets list of locations and returns their coordinates
 
 Function to calculate distance from your location to place, where movie was filmed
 
-![My Image](images/carbon3.png)
+![func build map](images/carbon3.png)
 
-
+Function to build map with 3 layers and a minimap: 
+    - the map itself
+    - markers
+    - circle marcers
 
 ![function main](images/carbon%20(1).png)
 
