@@ -12,7 +12,7 @@ python3 /Users/julia/Desktop/OP/week_1/map/lab1_2.py 2014 49.83826 24.02324 'pat
 
 ## Contributing
 
-Any improvements are welcomed!
+Any improvements are very welcomed!
 
 ## License
 
