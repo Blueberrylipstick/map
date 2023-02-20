@@ -51,7 +51,6 @@ def find_coords(points: str) -> list:
             if location:
                 places.append((location.latitude, location.longitude))
         except:
-            print('error')
             continue
     return places
 
