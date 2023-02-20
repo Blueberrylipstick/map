@@ -28,7 +28,9 @@ Function gets list of locations and returns their coordinates
 
 ![func calc distance](images/carbon2.png)
 
-Function to calculate distance from your location to place, where movie was filmed
+Function to calculate distance from your location to place, where movie was filmed.
+It uses formula of haversinus
+![haversinus](images/Screenshot%202023-02-20%20at%203.13.20%20PM.png)
 
 ![func build map](images/carbon3.png)
 
